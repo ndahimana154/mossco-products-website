@@ -30,66 +30,71 @@
         <!-- Dashboard Content -->
         <div class="col-md-8 mt-5 p-3">
             <!-- Right div with dashboard content -->
-            <h2>Products list</h2>
+            <h2>New product</h2>
             <div class="">
                 <div class="p-2">
-                    <a href="admin-new-product.php" class="btn btn-success">
-                        <i class="fa fa-plus"></i> product
+                    <a href="admin-products.php" class="btn btn-primary">
+                        <i class="fa fa-arrow-left"></i> back
                     </a>
                 </div>
-                <table class="table table-responsive table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Product name</th>
-                            <th>Product Description</th>
-                            <th>Product price</th>
-                            <th>Product Quantity</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            $count=1;
-                            $get_products = mysqli_query($server,"SELECT * from
-                                products
+                <form action="" method="post">
+                    <?php
+                        if (isset($_POST['save_productBTN'])) {
+                            $name = $_POST['name'];
+                            $description = $_POST['descr'];
+                            $price = $_POST['price'];
+                            // Check the product doesn't exists
+                            $check_product = mysqli_query($server,"SELECT * from products 
+                                WHERE product_name = '$name'
                             ");
-                            if (mysqli_num_rows($get_products) < 1) {
+                            if (mysqli_num_rows($check_product) > 0) {
                                 ?>
-                                <tr>
-                                    <td>
-                                        No values found!
-                                    </td>
-                                </tr>
+                                <p class="alert alert-danger">
+                                    Product already exists
+                                </p>
                                 <?php
                             }
-                            while ($data_products = mysqli_fetch_array($get_products)) {
-                                ?>
-                                <tr>
-                                    <td>
-                                        <?php echo $count++; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $data_products['product_name']; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $data_products['product_description']; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $data_products['product_price']."RWF"; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $data_products['product_quantity']; ?>
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                </tr>
-                                <?php
+                            else {
+                                $save = mysqli_query($server,"INSERT into products VALUES(null,'$name','$description','$price','0')");
+                                if (!$save) {
+                                    ?>
+                                    <p class="alert alert-danger">
+                                        Product not saved!
+                                    </p>
+                                    <?php
+                                }
+                                else {
+                                    ?>
+                                    <p class="alert alert-success">
+                                        Product is saved successfully.
+                                    </p>
+                                    <?php
+                                }
                             }
-                        ?>
-                    </tbody>
-                </table>
+                        }
+                    ?>
+                    <div class="form-group">
+                        <label for="">
+                            Product name
+                        </label>
+                        <input type="text" name="name" placeholder="Type..." class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">
+                            Product description
+                        </label>
+                        <textarea name="descr" placeholder="Type..." class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="">
+                            Product price
+                        </label>
+                        <input type="number" name="price" placeholder="Type..." class="form-control" required>
+                    </div>
+                    <button type="submit" name="save_productBTN" class="btn btn-success">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                </form>
             </div>
                
                 
