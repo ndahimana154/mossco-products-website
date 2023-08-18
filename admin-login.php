@@ -20,7 +20,7 @@
     ?>
 
     <!-- Login Form -->
-    <div class="container mt-5">
+    <div class="container mt-5" style="height: 100vh;">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-3">
                 <h2>

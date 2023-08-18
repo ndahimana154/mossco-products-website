@@ -82,7 +82,10 @@
                                         <?php echo $data_products['product_quantity']; ?>
                                     </td>
                                     <td>
-                                        
+                                        <a href="admin-import-products.php?import-product=<?php echo $data_products['id']; ?>" style="text-decoration: none;" 
+                                            class="text-dark">
+                                            <i class="fa fa-cart-arrow-down"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 <?php

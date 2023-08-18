@@ -11,7 +11,7 @@
                 </li>
                
                 <li class="nav-item">
-                    <a class="nav-link" href="sign-out.php?administration"><i class="fas fa-sign-out"></i> Signout</a>
+                    <a class="nav-link" href="sign-out.php?admin"><i class="fas fa-sign-out"></i> Signout</a>
                 </li>
                 <!-- Add more navigation links here -->
             </ul>
