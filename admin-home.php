@@ -19,66 +19,45 @@
 
     <!-- Navigation -->
     <?php
-        include("php/out-nav.php");
+        include("php/admin-nav.php");
     ?>
 
-    <!-- Login Form -->
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 mt-3">
-                <h2>
-                    Log in as admin
-                </h2>
-                <form action="" method="POST">
-                    <?php
-                        if (isset($_POST['loginBTN'])) {
-                            $un = $_POST['username'];
-                            $pw = $_POST['password'];
-                            $check_un = mysqli_query($server,"SELECT * from admin WHERE user_name = '$un'");
-                            if (mysqli_num_rows($check_un) !=1) {
-                                ?>
-                                <p class="alert alert-danger">
-                                    Username not found!
-                                </p>
-                                <?php
-                            }
-                            else {
-                                $check_pw_match = mysqli_query($server,"SELECT * from admin WHERE user_name = '$un'
-                                    AND password = '$pw'
-                                ");
-                                if (mysqli_num_rows($check_pw_match) !=1) {
-                                    ?>
-                                    <p class="alert alert-danger">
-                                        Password doesn't match with Username
-                                    </p>
-                                    <?php
-                                }
-                                else {
-                                    $data_userid = mysqli_fetch_array($check_pw_match);
-                                    $userid = $data_userid['user_id'];
-                                    $_SESION['acting_user_id'] = $userid;
-                                    header("location: admin-home.php");
-                                }
-                            }
-                        }
-                    ?>
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Type..." required>
+    <div class="row" style="">
+        <!-- Left navigation links -->
+        <?php
+            include("php/admin-left-links.php");
+        ?>
+        <!-- Dashboard Content -->
+        <div class="col-md-8">
+            <!-- Right div with dashboard content -->
+            <h2>Dashboard</h2>
+            <div class="row p-3">
+                <div class="col-md-4 m-2">
+                    <div class="dashboard-box bg-primary text-light p-2 row">
+                        <div class="mr-3">
+                            <i class="fas fa-user-friends fa-3x mb-3 flex-1"></i>
+                            <h4>Products</h4>
+                        </div>
+                        
+                        <p class="mb-0 fa-3x">
+                            <?php 
+                                $get_products = mysqli_query($server,"SELECT * from products");
+                                echo mysqli_num_rows($get_products);
+                            ?>
+                        </p>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Type..." required>
-                    </div>
-                    <button type="submit" name="loginBTN" class="btn btn-primary">Login</button>
-                </form>
+                </div>
+               
+                
+                <!-- Add more dashboard cards here -->
             </div>
+            <!-- Add your dashboard components here -->
         </div>
     </div>
 
     <!-- Footer -->
     <?php
-        include("php/footer.php");
+        // include("php/footer.php");
     ?>
 
     <!-- Add Bootstrap JS script link here -->
