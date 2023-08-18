@@ -10,6 +10,9 @@
                     <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">
+                        <i class="fa fa-user"></i> admin
+                    </a></li>
                 </ul>
             </div>
         </div>
