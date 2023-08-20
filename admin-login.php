@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    SESSION_START();
     include("php/server.php");
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@
                                 else {
                                     $data_userid = mysqli_fetch_array($check_pw_match);
                                     $userid = $data_userid['user_id'];
-                                    $_SESION['acting_user_id'] = $userid;
+                                    $_SESSION['acting_user_id'] = $userid;
                                     header("location: admin-home.php");
                                 }
                             }

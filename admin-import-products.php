@@ -67,31 +67,42 @@
                                         $quantity =(int) $_POST['qua'];
                                         $price =(int) $_POST['pri'];
                                         $new_quantity = $current_quantity + $quantity;
-                                        $save = mysqli_query($server,"INSERT into product_inventory VALUES(null,'$product','IN','$price',now(),'Performed','$acting_admin_id')");
-                                        if (!$save) {
+                                        if ($quantity == 0) {
                                             ?>
                                             <p class="alert alert-danger">
-                                                Inventory is not saved.
+                                                Zero import is not allowed
                                             </p>
                                             <?php
                                         }
                                         else {
-                                            $update = mysqli_query($server,"UPDATE products set product_quantity = '$new_quantity'
-                                                WHERE id = '$Product_id'
-                                            ");
-                                            if (!$update) {
+                                            $save = mysqli_query($server,"INSERT into product_inventory VALUES(null,'$product','IN','$price','$quantity',now(),'Performed','$acting_admin_id')");
+                                            if (!$save) {
                                                 ?>
                                                 <p class="alert alert-danger">
-                                                    Updating product quantity failed.
+                                                    Inventory is not saved.
                                                 </p>
                                                 <?php
                                             }
                                             else {
-                                                ?>
-                                                <p class="alert alert-success">
-                                                    Product quantity is imported successfully. The new quantity is <b><?php echo $new_quantity; ?></b>
-                                                </p>
-                                                <?php
+                                                $update = mysqli_query($server,"UPDATE products set 
+                                                    product_quantity = '$new_quantity'
+                                                    -- product_price = ''
+                                                    WHERE id = '$Product_id'
+                                                ");
+                                                if (!$update) {
+                                                    ?>
+                                                    <p class="alert alert-danger">
+                                                        Updating product quantity failed.
+                                                    </p>
+                                                    <?php
+                                                }
+                                                else {
+                                                    ?>
+                                                    <p class="alert alert-success">
+                                                        Product quantity is imported successfully. The new quantity is <b><?php echo $new_quantity; ?></b>
+                                                    </p>
+                                                    <?php
+                                                }
                                             }
                                         }
                                     }

@@ -1,10 +1,12 @@
 <?php
     session_start();
     include("php/server.php");
-    if (!isset($_SESION['acting_user_id'])) {
-        header("admin-login.php");
+    if (!isset($_SESSION['acting_user_id'])) {
+        header("Location: admin-login.php");
+        exit(); // Don't forget to exit after redirect
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +24,7 @@
         include("php/admin-nav.php");
     ?>
 
-    <div class="row" style="">
+    <div class="row">
         <!-- Left navigation links -->
         <?php
             include("php/admin-left-links.php");
@@ -34,71 +36,77 @@
             <div class="">
                 <div class="p-2">
                     <a href="admin-products.php" class="btn btn-primary">
-                        <i class="fa fa-arrow-left"></i> back
+                        <i class="fa fa-arrow-left"></i> Back
                     </a>
                 </div>
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     <?php
+                        // Existing code for form submission and error handling
+
                         if (isset($_POST['save_productBTN'])) {
                             $name = $_POST['name'];
+                            $name = mysqli_real_escape_string($server, $name);
                             $description = $_POST['descr'];
+                            $description = mysqli_real_escape_string($server, $description);
                             $price = $_POST['price'];
-                            // Check the product doesn't exists
-                            $check_product = mysqli_query($server,"SELECT * from products 
-                                WHERE product_name = '$name'
+
+                            // Image Upload
+                            $image_name = $_FILES['product_image']['name'];
+                            $image_tmp = $_FILES['product_image']['tmp_name'];
+                            $image_type = $_FILES['product_image']['type'];
+
+                            $allowed_extensions = array("image/jpeg", "image/jpg", "image/png");
+                            // Check if the product name exists 
+                            $checkNameexiss = mysqli_query($server,"SELECT * from products
+                                WHERE product_name = '$name' 
+                                AND product_status = 'On-sale'
                             ");
-                            if (mysqli_num_rows($check_product) > 0) {
+                            if (mysqli_num_rows($checkNameexiss) > 0) {
                                 ?>
                                 <p class="alert alert-danger">
                                     Product already exists
                                 </p>
                                 <?php
                             }
-                            else {
-                                $save = mysqli_query($server,"INSERT into products VALUES(null,'$name','$description','$price','0')");
+                            elseif (in_array($image_type, $allowed_extensions)) {
+                                $image_path = "images/products/" . $image_name;
+                                move_uploaded_file($image_tmp, $image_path);
+
+                                // Database Query to Store Image Name
+                                $save = mysqli_query($server, "INSERT INTO products 
+                                                              VALUES (null, '$name', '$image_name', '$description', '$price', '0', 'On-sale')");
+                                
                                 if (!$save) {
-                                    ?>
-                                    <p class="alert alert-danger">
-                                        Product not saved!
-                                    </p>
-                                    <?php
+                                    echo '<p class="alert alert-danger">Product not saved!</p>';
+                                } else {
+                                    echo '<p class="alert alert-success">Product is saved successfully.</p>';
                                 }
-                                else {
-                                    ?>
-                                    <p class="alert alert-success">
-                                        Product is saved successfully.
-                                    </p>
-                                    <?php
-                                }
+                            } else {
+                                echo '<p class="alert alert-danger">Only JPEG, JPG, and PNG images are allowed.</p>';
                             }
                         }
                     ?>
                     <div class="form-group">
-                        <label for="">
-                            Product name
-                        </label>
+                        <label for="">Product name</label>
                         <input type="text" name="name" placeholder="Type..." class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="">
-                            Product description
-                        </label>
+                        <label for="">Product description</label>
                         <textarea name="descr" placeholder="Type..." class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="">
-                            Product price
-                        </label>
+                        <label for="">Product price</label>
                         <input type="number" name="price" placeholder="Type..." class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Product image</label>
+                        <input type="file" name="product_image" accept="image/*" class="form-control-file" required>
                     </div>
                     <button type="submit" name="save_productBTN" class="btn btn-success">
                         <i class="fa fa-save"></i> Save
                     </button>
                 </form>
             </div>
-               
-                
-            <!-- Add your dashboard components here -->
         </div>
     </div>
 

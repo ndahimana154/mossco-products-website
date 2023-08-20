@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    include("php/server.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -40,39 +44,47 @@
                 <div class="row">
                     <!-- Product Box 1 -->
                     <div class="col-md-12 mb-4">
-                        <div class="">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name 1</h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <img src="images/pexels-tatiana-sozutova-13179663.jpg" class="img-fluid" alt="Product 1 Image">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row" style="text-align: center;justify-content: center;">
-                                            <a href="https://wa.me/250788923011" class="btn btn-success m-2">
-                                                <i class="fab fa-whatsapp"></i>
-                                                Order
-                                            </a>
-                                            <a href="https://facebook.com/your-page-link" class="btn btn-primary m-2">Order on Facebook</a>
+                        <?php
+                            $get_products = mysqli_query($server,"SELECT * from products 
+                                WHERE product_quantity > 0
+                                AND product_status='On-sale'
+                                ORDER BY product_quantity DESC
+                            ");
+                            if (mysqli_num_rows($get_products) < 1) {
+                                ?>
+                                <p class="alert alert-danger">
+                                    No products found!
+                                </p>
+                                <?php
+                            }
+                            while ($data_products = mysqli_fetch_array($get_products)) {
+                                ?>
+                                <div class="card-body bg-white m-2 shadow-3">
+                                    <h4 class="card-title">
+                                        <?php
+                                            echo $data_products['product_name'];
+                                        ?>
+                                    </h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <img src="images/products/<?php echo $data_products['product_image'] ?>" class="img-fluid" alt="Image for <?php echo $data_products['product_name'] ?>">
                                         </div>
-                                        <p class="card-text">
-                                            <h2>
-
-                                            </h2>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque iusto atque, velit eum exercitationem vel! In amet fuga, facilis excepturi fugiat quod animi repudiandae quisquam, pariatur iste labore quam incidunt.
-                                            <br> <br>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores minus perferendis tempore nihil voluptates animi quaerat dicta in? Error quisquam labore qui culpa molestias minima, fuga neque iste omnis itaque!
-                                            <br><br>
-                                        </p>
-                                        <div class="embed-responsive embed-responsive-16by9 mt-3">
-                                            <iframe class="embed-responsive-item" src="youtube-link-1"></iframe>
+                                        <div class="col-md-6">
+                                            <p class="card-text p-2">
+                                                <?php echo $data_products['product_description']; ?>
+                                            </p>
+                                            <div class="row" style="text-align: center;justify-content: center;">
+                                            <a href="https://wa.me/250788923011?text=Hello? I would like to get more informations about the product called '<?php echo $data_products['product_name'];?>' and if i can order it after." target="_blank"
+                                                class="btn btn-success">
+                                                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
-                            </div>
-                        </div>
+                                <?php
+                            }
+                        ?>
                     </div>
                     <!-- Repeat for more products -->
                 </div>

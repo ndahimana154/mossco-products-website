@@ -1,8 +1,9 @@
 <?php
     session_start();
     include("php/server.php");
-    if (!isset($_SESION['acting_user_id'])) {
-        header("admin-login.php");
+    include("php/admin-sessions.php");
+    if (!isset($_SESSION['acting_user_id'])) {
+        header("location: admin-login.php");
     }
 ?>
 <!DOCTYPE html>
@@ -28,9 +29,9 @@
             include("php/admin-left-links.php");
         ?>
         <!-- Dashboard Content -->
-        <div class="col-md-8">
+        <div class="col-md-8 mt-5">
             <!-- Right div with dashboard content -->
-            <h2>Dashboard</h2>
+            <h2 class="mt-2">Dashboard || <?php echo $acting_admin_username; ?></h2>
             <div class="row p-3">
                 <div class="col-md-4 m-2">
                     <div class="dashboard-box bg-primary text-light p-2 row">

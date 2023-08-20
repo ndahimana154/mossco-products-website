@@ -9,6 +9,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="admin-products.php"><i class="fas fa-clipboard-list"></i> Products</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin-inventory.php"><i class="fas fa-clipboard-list"></i> Inventory</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin-inventory-filters.php"><i class="fas fa-clipboard-list"></i> Inventory filters</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin-settings.php"><i class="fas fa-user-cog"></i> Settings</a>
+                </li>
                
                 <li class="nav-item">
                     <a class="nav-link" href="sign-out.php?admin"><i class="fas fa-sign-out"></i> Signout</a>
